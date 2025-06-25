@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://mx2ev1dt00am"]
+
+[ext_resource type="Script" uid="uid://iwjk3xe7ql6r" path="res://Code/Character/Look/CharLook.cs" id="1_4yweu"]
+
+[node name="look" type="Node2D"]
+script = ExtResource("1_4yweu")

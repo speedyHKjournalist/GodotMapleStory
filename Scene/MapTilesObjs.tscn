@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn1v11ghwherx"]
+
+[ext_resource type="Script" uid="uid://ccloumi1a2biu" path="res://Code/GamePlay/MapleMap/MapTilesObjs.cs" id="1_ch77u"]
+
+[node name="MapTilesObjs" type="Node2D"]
+script = ExtResource("1_ch77u")

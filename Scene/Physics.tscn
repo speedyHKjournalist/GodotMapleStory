@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://mr4hltw32g04"]
+
+[ext_resource type="Script" uid="uid://e7did5llf1yg" path="res://Code/GamePlay/Physics/Physics.cs" id="1_5aro8"]
+[ext_resource type="Script" uid="uid://b2gye2hvrmfcc" path="res://Code/GamePlay/Physics/FootholdTree.cs" id="2_rty5x"]
+
+[node name="Physics" type="Node2D"]
+script = ExtResource("1_5aro8")
+
+[node name="FootholdTree" type="Node2D" parent="."]
+script = ExtResource("2_rty5x")

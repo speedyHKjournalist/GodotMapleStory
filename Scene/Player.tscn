@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn0y48gdj1nr0"]
+
+[ext_resource type="Script" uid="uid://b6eympeuro1f1" path="res://Code/Character/Player.cs" id="1_6l3be"]
+[ext_resource type="PackedScene" uid="uid://mx2ev1dt00am" path="res://Scene/CharLook.tscn" id="2_3eeal"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_6l3be")
+
+[node name="look" parent="." instance=ExtResource("2_3eeal")]

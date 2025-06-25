@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjcqmbvilkx4a"]
+
+[ext_resource type="Script" uid="uid://yhx6xulh066n" path="res://Code/IO/Components/ChatBalloon.cs" id="1_ijbin"]
+[ext_resource type="PackedScene" uid="uid://ckxndoq8lkhh4" path="res://Scene/MapleFrame.tscn" id="2_ygjuw"]
+
+[node name="NpcDialogue" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ijbin")
+
+[node name="frame" parent="." instance=ExtResource("2_ygjuw")]
+
+[node name="arrow" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="displayTimer" type="Timer" parent="."]
+
+[node name="textContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="text" type="Label" parent="textContainer"]
+layout_mode = 2

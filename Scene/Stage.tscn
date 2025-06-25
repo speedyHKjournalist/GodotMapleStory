@@ -1,0 +1,210 @@
+[gd_scene load_steps=6 format=3 uid="uid://c78cwrboie5xo"]
+
+[ext_resource type="Script" uid="uid://bxkquj31ahes6" path="res://Code/GamePlay/Stage.cs" id="1_dbo1i"]
+[ext_resource type="PackedScene" uid="uid://sy5bp25y4tvm" path="res://Scene/Backgrounds.tscn" id="2_lmaet"]
+[ext_resource type="PackedScene" uid="uid://dn1v11ghwherx" path="res://Scene/MapTilesObjs.tscn" id="3_laujf"]
+[ext_resource type="PackedScene" uid="uid://mr4hltw32g04" path="res://Scene/Physics.tscn" id="4_qohnl"]
+[ext_resource type="PackedScene" uid="uid://cstocb5br05io" path="res://Scene/MapNpcs.tscn" id="5_km80h"]
+
+[node name="Stage" type="Node2D"]
+script = ExtResource("1_dbo1i")
+
+[node name="Layer0" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer0"]
+layer = 0
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer0"]
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer0"]
+layer = 2
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer0"]
+layer = 3
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer0"]
+layer = 4
+
+[node name="Player_5" type="CanvasLayer" parent="Layer0"]
+layer = 5
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer0"]
+layer = 6
+
+[node name="Layer1" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer1"]
+layer = 7
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer1"]
+layer = 8
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer1"]
+layer = 9
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer1"]
+layer = 10
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer1"]
+layer = 11
+
+[node name="Player_5" type="CanvasLayer" parent="Layer1"]
+layer = 12
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer1"]
+layer = 13
+
+[node name="Layer2" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer2"]
+layer = 14
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer2"]
+layer = 15
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer2"]
+layer = 16
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer2"]
+layer = 17
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer2"]
+layer = 18
+
+[node name="Player_5" type="CanvasLayer" parent="Layer2"]
+layer = 19
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer2"]
+layer = 20
+
+[node name="Layer3" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer3"]
+layer = 21
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer3"]
+layer = 22
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer3"]
+layer = 23
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer3"]
+layer = 24
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer3"]
+layer = 25
+
+[node name="Player_5" type="CanvasLayer" parent="Layer3"]
+layer = 26
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer3"]
+layer = 27
+
+[node name="Layer4" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer4"]
+layer = 28
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer4"]
+layer = 29
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer4"]
+layer = 30
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer4"]
+layer = 31
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer4"]
+layer = 32
+
+[node name="Player_5" type="CanvasLayer" parent="Layer4"]
+layer = 33
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer4"]
+layer = 34
+
+[node name="Layer5" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer5"]
+layer = 35
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer5"]
+layer = 36
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer5"]
+layer = 37
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer5"]
+layer = 38
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer5"]
+layer = 39
+
+[node name="Player_5" type="CanvasLayer" parent="Layer5"]
+layer = 40
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer5"]
+layer = 41
+
+[node name="Layer6" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer6"]
+layer = 42
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer6"]
+layer = 43
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer6"]
+layer = 44
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer6"]
+layer = 45
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer6"]
+layer = 46
+
+[node name="Player_5" type="CanvasLayer" parent="Layer6"]
+layer = 47
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer6"]
+layer = 48
+
+[node name="Layer7" type="Node2D" parent="."]
+
+[node name="MapTilesObjs_0" type="CanvasLayer" parent="Layer7"]
+layer = 49
+
+[node name="MapReactors_1" type="CanvasLayer" parent="Layer7"]
+layer = 50
+
+[node name="MapNpcs_2" type="CanvasLayer" parent="Layer7"]
+layer = 51
+
+[node name="MapMobs_3" type="CanvasLayer" parent="Layer7"]
+layer = 52
+
+[node name="MapChars_4" type="CanvasLayer" parent="Layer7"]
+layer = 53
+
+[node name="Player_5" type="CanvasLayer" parent="Layer7"]
+layer = 54
+
+[node name="MapDrops_6" type="CanvasLayer" parent="Layer7"]
+layer = 55
+
+[node name="CombatCanvas" type="CanvasLayer" parent="."]
+layer = 56
+
+[node name="MapPortalCanvas" type="CanvasLayer" parent="."]
+layer = 57
+
+[node name="MapEffect" type="CanvasLayer" parent="."]
+layer = 59
+
+[node name="Backgrounds" parent="." instance=ExtResource("2_lmaet")]
+
+[node name="MapTilesObjs" parent="." instance=ExtResource("3_laujf")]
+
+[node name="Physics" parent="." instance=ExtResource("4_qohnl")]
+
+[node name="MapNpcs_2" parent="." instance=ExtResource("5_km80h")]

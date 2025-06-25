@@ -1,0 +1,20 @@
+# Godot 4+ specific ignores
+.godot/
+.mono/
+*.import
+*.uid
+*.csproj.user
+*.csproj.old
+# Ignore all wz files
+*.wz
+# Visual Studio specific generated files
+.vs/
+bin/
+obj/
+*.pdb
+*.user
+*.suo
+Properties/launchSettings.json
+# OS generated files
+.DS_Store
+Thumbs.db

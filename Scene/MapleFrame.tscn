@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckxndoq8lkhh4"]
+
+[ext_resource type="Script" uid="uid://bko4fnvjuw6f6" path="res://Code/IO/Components/MapleFrame.cs" id="1_3kf0g"]
+
+[node name="MapleFrame" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_3kf0g")
+
+[node name="center" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="north" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="northEast" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="northWest" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="west" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="southWest" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="south" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="southEast" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="east" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0

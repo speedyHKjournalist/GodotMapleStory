@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cstocb5br05io"]
+
+[ext_resource type="Script" uid="uid://bbfb2txe7ticq" path="res://Code/GamePlay/MapleMap/MapNpcs.cs" id="1_xolnd"]
+[ext_resource type="Script" uid="uid://cqiobt5afrrfm" path="res://Code/GamePlay/MapleMap/MapObjects.cs" id="2_wg8kh"]
+
+[node name="MapNpcs" type="Node2D"]
+script = ExtResource("1_xolnd")
+
+[node name="Npcs" type="Node2D" parent="."]
+script = ExtResource("2_wg8kh")
