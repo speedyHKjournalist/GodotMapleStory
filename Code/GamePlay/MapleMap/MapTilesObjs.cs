@@ -28,8 +28,8 @@ namespace MapleStory
         private const int TILE_RENDERING_OFFSET = 1000;
         public TilesObjs(Layer.Id layer, Wz_Node source)
         {
-            tiles = new SortedDictionary<int, List<Tile>>();
-            objs = new SortedDictionary<int, List<Obj>>();
+            tiles = [];
+            objs = [];
 
             Wz_Node tileSet = source.FindNodeByPath(@"info\tS");
             if (tileSet != null)
@@ -42,7 +42,7 @@ namespace MapleStory
 
                     if (!tiles.ContainsKey(zIndex))
                     {
-                        tiles[zIndex] = new List<Tile>();
+                        tiles[zIndex] = [];
                     }
                     tiles[zIndex].Add(tile);
                     AddChild(tile);
@@ -60,7 +60,7 @@ namespace MapleStory
 
                     if (!objs.ContainsKey(zIndex))
                     {
-                        objs[zIndex] = new List<Obj>();
+                        objs[zIndex] = [];
                     }
                     objs[zIndex].Add(obj);
                     AddChild(obj);
@@ -82,7 +82,7 @@ namespace MapleStory
 
                 if (layerNode != null)
                 {
-                    TilesObjs tileobj = new TilesObjs(layer, layerNode);
+                    TilesObjs tileobj = new(layer, layerNode);
                     layers[layer] = tileobj;
 
                     stage.GetNode<CanvasLayer>($"Layer{(int)layer}/MapTilesObjs_0").AddChild(tileobj);

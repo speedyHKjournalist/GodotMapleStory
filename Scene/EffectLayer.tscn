@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bic8ajv5wotgb"]
+
+[ext_resource type="Script" uid="uid://c0nqvhxld8egt" path="res://Code/Graphics/EffectLayer.cs" id="1_q4iyt"]
+
+[node name="effects" type="Node2D"]
+script = ExtResource("1_q4iyt")

@@ -28,8 +28,7 @@ namespace MapleStory
         public void Remove(int objectId)
         {
             MapObject? npc = npcs?.Get(objectId);
-            if (npc != null)
-                npc.Deactivate();
+            npc?.Deactivate();
         }
 
         public void Clear()

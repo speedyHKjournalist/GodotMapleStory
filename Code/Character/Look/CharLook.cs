@@ -291,6 +291,11 @@ namespace MapleStory
             return stance.Get();
         }
 
+        public bool IsAnimationEnded()
+        {
+            return IsAnimationEnd;
+        }
+
         enum AttackType : int
         {
             NONE = 0,

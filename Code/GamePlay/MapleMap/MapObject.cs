@@ -75,9 +75,7 @@ namespace MapleStory
             int newLayer = physicsObject.footHoldLayer;
 
             if (newLayer != oldLayer)
-            {
                 EmitSignal(SignalName.LayerChanged, objectId, oldLayer, newLayer);
-            }
         }
     }
 }

@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://cn0y48gdj1nr0"]
+[gd_scene load_steps=4 format=3 uid="uid://cn0y48gdj1nr0"]
 
 [ext_resource type="Script" uid="uid://b6eympeuro1f1" path="res://Code/Character/Player.cs" id="1_6l3be"]
 [ext_resource type="PackedScene" uid="uid://mx2ev1dt00am" path="res://Scene/CharLook.tscn" id="2_3eeal"]
+[ext_resource type="PackedScene" uid="uid://bic8ajv5wotgb" path="res://Scene/EffectLayer.tscn" id="3_jvxg0"]
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_6l3be")
 
 [node name="look" parent="." instance=ExtResource("2_3eeal")]
+
+[node name="effects" parent="." instance=ExtResource("3_jvxg0")]

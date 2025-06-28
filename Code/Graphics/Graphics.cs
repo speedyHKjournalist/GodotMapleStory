@@ -179,13 +179,13 @@ namespace MapleStory
         private List<Frame> frames;
         private bool animated;
         private bool zigzag;
-        private bool animationEnd = false;
+        protected bool animationEnd = false;
 
         private Nominal<int> frame;
         private Linear<float> opacity;
         private Linear<float> xyScale;
 
-        private float alpha;
+        protected float alpha;
         private float opacityStep;
         private int delay;
         private int frameStep;
@@ -195,7 +195,7 @@ namespace MapleStory
             frame = new Nominal<int>();
             opacity = new Linear<float>();
             xyScale = new Linear<float>();
-            frames = new List<Frame>();
+            frames = [];
 
             animated = false;
             zigzag = false;
@@ -206,22 +206,58 @@ namespace MapleStory
 
         public MapleAnimation Clone()
         {
-            MapleAnimation copy = new MapleAnimation();
+            MapleAnimation copy = new()
+            {
+                frames = [.. frames.Select(f => f.Clone())],
+                animated = animated,
+                zigzag = zigzag,
+                animationEnd = animationEnd,
+                delay = delay,
+                frameStep = frameStep,
+                opacityStep = opacityStep,
+                alpha = alpha,
 
-            copy.frames = frames.Select(f => f.Clone()).ToList();
-            copy.animated = animated;
-            copy.zigzag = zigzag;
-            copy.animationEnd = animationEnd;
-            copy.delay = delay;
-            copy.frameStep = frameStep;
-            copy.opacityStep = opacityStep;
-            copy.alpha = alpha;
+                frame = frame.Clone(),
+                opacity = opacity.Clone(),
+                xyScale = xyScale.Clone()
+            };
 
-            copy.frame = frame.Clone();
-            copy.opacity = opacity.Clone();
-            copy.xyScale = xyScale.Clone();
+            foreach (Frame f in frames)
+            {
+                f.Visible = false;
+                copy.AddChild(f);
+            }
+
+            copy.Reset();
 
             return copy;
+        }
+
+        public MapleAnimation(MapleAnimation animation) : this()
+        {
+            animated = animation.animated;
+            zigzag = animation.zigzag;
+            animationEnd = animation.animationEnd;
+            delay = animation.delay;
+            frameStep = animation.frameStep;
+            opacityStep = animation.opacityStep;
+            alpha = animation.alpha;
+
+            // Deep clone Nominal/Linear objects
+            frame = animation.frame.Clone();
+            opacity = animation.opacity.Clone();
+            xyScale = animation.xyScale.Clone();
+
+            frames = [];
+            foreach (Frame originalFrame in animation.frames)
+            {
+                Frame clonedFrame = originalFrame.Clone();
+                frames.Add(clonedFrame);
+                clonedFrame.Visible = false;
+                AddChild(clonedFrame);
+            }
+
+            Reset();
         }
         public MapleAnimation(Wz_Node source)
         {
