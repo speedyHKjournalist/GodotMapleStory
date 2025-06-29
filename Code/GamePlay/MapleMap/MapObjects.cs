@@ -6,7 +6,7 @@ namespace MapleStory
 {
     public partial class MapObjects : Node2D
     {
-        private Dictionary<int, MapObject> objects = new Dictionary<int, MapObject>();
+        private Dictionary<int, MapObject> objects = [];
         private HashSet<int>[] layers = new HashSet<int>[Enum.GetValues(typeof(Layer.Id)).Length];
         private Physics? physics;
         private Stage? stage;

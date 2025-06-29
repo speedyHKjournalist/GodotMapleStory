@@ -124,7 +124,7 @@ namespace MapleStory
 
         public void SetDrawArguments(List<DrawArgument> args)
         {
-            currentDrawArguments = args.Select(a => new DrawArgument(a)).ToList();
+            currentDrawArguments = [.. args.Select(a => new DrawArgument(a))];
             drawMultiple = true;
             QueueRedraw();
         }

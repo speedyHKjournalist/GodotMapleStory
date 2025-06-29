@@ -54,7 +54,7 @@ namespace MapleStory
             {
                 foreach (Wz_Node objNode in objectNode.Nodes)
                 {
-                    Obj obj = new Obj(objNode);
+                    Obj obj = new(objNode);
                     int zIndex = obj.GetZIndex();
                     obj.ZIndex = zIndex;
 

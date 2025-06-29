@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c78cwrboie5xo"]
+[gd_scene load_steps=7 format=3 uid="uid://c78cwrboie5xo"]
 
 [ext_resource type="Script" uid="uid://bxkquj31ahes6" path="res://Code/GamePlay/Stage.cs" id="1_dbo1i"]
 [ext_resource type="PackedScene" uid="uid://sy5bp25y4tvm" path="res://Scene/Backgrounds.tscn" id="2_lmaet"]
+[ext_resource type="Script" uid="uid://dgouy6m0ntmur" path="res://Code/GamePlay/Camera.cs" id="3_bgy8v"]
 [ext_resource type="PackedScene" uid="uid://dn1v11ghwherx" path="res://Scene/MapTilesObjs.tscn" id="3_laujf"]
 [ext_resource type="PackedScene" uid="uid://mr4hltw32g04" path="res://Scene/Physics.tscn" id="4_qohnl"]
 [ext_resource type="PackedScene" uid="uid://cstocb5br05io" path="res://Scene/MapNpcs.tscn" id="5_km80h"]
@@ -202,6 +203,9 @@ layer = 57
 layer = 59
 
 [node name="Backgrounds" parent="." instance=ExtResource("2_lmaet")]
+
+[node name="Camera" type="Node2D" parent="."]
+script = ExtResource("3_bgy8v")
 
 [node name="MapTilesObjs" parent="." instance=ExtResource("3_laujf")]
 

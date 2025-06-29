@@ -23,15 +23,18 @@ namespace MapleStory
         private MapBackgrounds? backgrounds;
         private MapTilesObjs? tilesObjs;
         private MapNpcs? npcs;
+        private MapInfo? mapInfo;
         private Physics? physics;
+        private Camera? camera;
 
         private MaplePoint<int> lastCameraPosition;
         private MaplePoint<double> lastCameraRealPosition;
 
-        private State state;
+        private State state = State.ACTIVE;
 
         public override void _Ready()
         {
+            camera = GetNode<Camera>("Camera");
             backgrounds = GetNode<MapBackgrounds>("Backgrounds");
             tilesObjs = GetNode<MapTilesObjs>("MapTilesObjs");
             physics = GetNode<Physics>("Physics");
@@ -80,11 +83,11 @@ namespace MapleStory
             player.Init(entry);
         }
 
-        public void Interpolate(double alpha)
+        public void Interpolate()
         {
-            MaplePoint<int> viewPosition = new(100, 100);
-            MaplePoint<double> viewRealPosition = new(100d, 100d);
-            /*camera.RealPosition(alpha);*/
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<int> viewPosition = camera!.CurrentPosition(alpha);
+            MaplePoint<double> viewRealPosition = camera!.RealPosition(alpha);
 
             if (viewPosition != lastCameraPosition)
             {
@@ -108,20 +111,23 @@ namespace MapleStory
             backgrounds?.Init(mapImgNode.FindNodeByPath("back"));
             tilesObjs?.Init(mapImgNode);
             physics?.Init(mapImgNode.FindNodeByPath("foothold"));
+
+            mapInfo = new MapInfo(mapId, physics!.GetFootholdTree()!.GetWalls(), physics!.GetFootholdTree()!.GetBorders());
+            camera?.Init();
+            camera?.SetView(mapInfo.GetWalls(), mapInfo.GetBorders());
         }
 
         public override void _Process(double delta)
         {
-            double alpha = Engine.GetPhysicsInterpolationFraction();
-            Interpolate(alpha);
+            Interpolate();
         }
 
         public override void _PhysicsProcess(double delta)
         {
             if (state != State.ACTIVE)
-            {
                 return;
-            }
+
+            camera?.Update(player.GetPosition());
         }
     }
 }

@@ -11,12 +11,10 @@ namespace MapleStory
         private int zIndex;
         private bool flip;
 
-        private MaplePoint<int> cameraPosition;
+        private Camera? camera;
         public override void _Ready()
         {
-            Stage stage = GetNode<Stage>($"/root/Root/ViewportContainer/SubViewport/Stage");
-            stage.CameraPositionChanged += OnCameraPositionChanged;
-
+            camera = GetNode<Camera>($"/root/Root/ViewportContainer/SubViewport/Stage/Camera");
             AddChild(animation);
         }
 
@@ -33,7 +31,7 @@ namespace MapleStory
 
             animation = new MapleAnimation(objNode);
             position = new MaplePoint<int>(source.FindNodeByPath("x").GetValueEx<int>(0), source.FindNodeByPath("y").GetValueEx<int>(0));
-            flip = source.FindNodeByPath("f").GetValueEx<int>(0) == 1 ? true : false;
+            flip = source.FindNodeByPath("f").GetValueEx<int>(0) == 1;
             zIndex = source.FindNodeByPath("z").GetValueEx<int>(0);
         }
 
@@ -47,14 +45,11 @@ namespace MapleStory
             return zIndex;
         }
 
-        private void OnCameraPositionChanged(int viewPositionX, int viewPositionY)
-        {
-            cameraPosition = new MaplePoint<int>(viewPositionX, viewPositionY);
-        }
-
         public override void _Process(double delta)
         {
-            Interpolate(cameraPosition);
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<int> viewPosition = camera!.CurrentPosition(alpha);
+            Interpolate(viewPosition);
         }
     }
 }

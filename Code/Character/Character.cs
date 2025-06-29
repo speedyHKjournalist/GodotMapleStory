@@ -1,7 +1,6 @@
 // Base for characters, e.g. the player and other clients on the same map.
 using Godot;
 using System;
-using System.Xml;
 
 namespace MapleStory
 {
@@ -55,6 +54,7 @@ namespace MapleStory
             look.ZIndex = 0;
             nameLabel.ZIndex = 3;
             chatBalloon.ZIndex = 4;
+
             AddChild(nameLabel);
             AddChild(chatBalloon);
             chatBalloon.Init(0, Colors.Black);
@@ -169,7 +169,6 @@ namespace MapleStory
 
         public override void _PhysicsProcess(double delta)
         {
-
             invincible.Update((uint)(delta * 1000));
             ironBody.Update((uint)(delta * 1000));
 
