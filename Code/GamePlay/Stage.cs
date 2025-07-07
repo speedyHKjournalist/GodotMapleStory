@@ -8,11 +8,6 @@ namespace MapleStory
     {
         private Player player = GD.Load<PackedScene>("res://Scene/Player.tscn").Instantiate<Player>();
 
-        [Signal]
-        public delegate void CameraPositionChangedEventHandler(int viewPositionX, int viewPositionY);
-        [Signal]
-        public delegate void CameraRealPositionChangedEventHandler(double viewRealPositionX, double viewRealPositionY);
-
         private enum State
         {
             INACTIVE,
@@ -26,9 +21,6 @@ namespace MapleStory
         private MapInfo? mapInfo;
         private Physics? physics;
         private Camera? camera;
-
-        private MaplePoint<int> lastCameraPosition;
-        private MaplePoint<double> lastCameraRealPosition;
 
         private State state = State.ACTIVE;
 
@@ -85,21 +77,6 @@ namespace MapleStory
 
         public void Interpolate()
         {
-            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
-            MaplePoint<int> viewPosition = camera!.CurrentPosition(alpha);
-            MaplePoint<double> viewRealPosition = camera!.RealPosition(alpha);
-
-            if (viewPosition != lastCameraPosition)
-            {
-                EmitSignal(SignalName.CameraPositionChanged, viewPosition.X, viewPosition.Y);
-                lastCameraPosition = viewPosition;
-            }
-
-            if (viewRealPosition != lastCameraRealPosition)
-            {
-                EmitSignal(SignalName.CameraRealPositionChanged, viewRealPosition.X, viewRealPosition.Y);
-                lastCameraRealPosition = viewRealPosition;
-            }
         }
 
         public void LoadMap(int mapId)

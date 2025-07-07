@@ -36,10 +36,11 @@ namespace MapleStory
 
         protected bool attacking = false;
         protected bool facingRight;
-        protected MaplePoint<double> cameraRealPosition = new();
 
         private ChatBalloon chatBalloon = GD.Load<PackedScene>("res://Scene/NpcDialogue.tscn").Instantiate<ChatBalloon>();
         private Label nameLabel = new();
+
+        private Camera? camera;
 
         public override void _Ready()
         {
@@ -59,8 +60,7 @@ namespace MapleStory
             AddChild(chatBalloon);
             chatBalloon.Init(0, Colors.Black);
 
-            Stage stage = GetNode<Stage>($"/root/Root/ViewportContainer/SubViewport/Stage");
-            stage.CameraRealPositionChanged += OnCameraRealPositionChanged;
+            camera = GetNode<Camera>($"/root/Root/ViewportContainer/SubViewport/Stage/Camera");
             LayerChanged += OnLayerChanged;
         }
 
@@ -121,11 +121,6 @@ namespace MapleStory
             nameLabel.AddThemeStyleboxOverride("normal", nameTagBackground);
         }
 
-        public override void OnCameraRealPositionChanged(double viewRealPositionX, double viewRealPositionY)
-        {
-            cameraRealPosition = new MaplePoint<double>(viewRealPositionX, viewRealPositionY);
-        }
-
         public void OnLayerChanged(int objectId, int oldLayer, int newLayer)
         {
             Node2D? previousPlayerNode = GetParent<Node2D>();
@@ -137,7 +132,9 @@ namespace MapleStory
 
         public override void _Process(double delta)
         {
-            MaplePoint<int> absPosition = physicsObject.GetAbsolute(cameraRealPosition.X, cameraRealPosition.Y);
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<double> realPosition = camera!.RealPosition(alpha);
+            MaplePoint<int> absPosition = physicsObject.GetAbsolute(realPosition.X, realPosition.Y);
 
             effects?.Interpolate(absPosition);
             MapleColor color;

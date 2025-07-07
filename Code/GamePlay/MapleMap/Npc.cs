@@ -17,7 +17,6 @@ namespace MapleStory
         private Label funcLabel = new();
 
         private RandomNumberGenerator random;
-        private MaplePoint<double> cameraRealPosition;
         private string name;
         private string func;
         private bool hideName;
@@ -29,12 +28,13 @@ namespace MapleStory
         private string stance = string.Empty;
         private bool control;
 
+        private Camera? camera;
+
         public override void _Ready()
         {
             base._Ready();
 
-            Stage stage = GetNode<Stage>($"/root/Root/ViewportContainer/SubViewport/Stage");
-            stage.CameraRealPositionChanged += OnCameraRealPositionChanged;
+            camera = GetNode<Camera>($"/root/Root/ViewportContainer/SubViewport/Stage/Camera");
 
             AddChild(textLabel);
             AddChild(funcLabel);
@@ -170,20 +170,19 @@ namespace MapleStory
 
         public override void _Process(double delta)
         {
-            MaplePoint<int> absPosition = physicsObject.GetAbsolute(cameraRealPosition.X, cameraRealPosition.Y);
-
-            if (animations.TryGetValue(stance, out MapleAnimation? anim))
-                anim.Interpolate(new DrawArgument(absPosition, flip));
-        }
-
-        public override void OnCameraRealPositionChanged(double viewRealPositionX, double viewRealPositionY)
-        {
-            cameraRealPosition = new MaplePoint<double>(viewRealPositionX, viewRealPositionY);
-            MaplePoint<int> absPosition = physicsObject.GetAbsolute(cameraRealPosition.X, cameraRealPosition.Y);
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<double> realPosition = camera!.RealPosition(alpha);
+            MaplePoint<int> absPosition = physicsObject.GetAbsolute(realPosition.X, realPosition.Y);
 
             textLabel.GlobalPosition = (absPosition - new MaplePoint<int>((int)(textLabel.Size.X / 2f), -2)).ToVector2();
             funcLabel.GlobalPosition = (absPosition - new MaplePoint<int>((int)(funcLabel.Size.X / 2f), -24)).ToVector2();
             chatBalloon.GlobalPosition = (absPosition - new MaplePoint<int>(-20, 70)).ToVector2();
+
+            if (animations.TryGetValue(stance, out MapleAnimation? anim))
+            {
+                anim.GlobalPosition = absPosition.ToVector2();
+                anim.Interpolate(new DrawArgument(flip));
+            }
         }
 
         public override void _PhysicsProcess(double delta)
@@ -199,8 +198,8 @@ namespace MapleStory
             if (this.stance != stance)
             {
                 this.stance = stance;
-                if (animations.ContainsKey(stance))
-                    animations[stance].Reset();
+                if (animations.TryGetValue(stance, out MapleAnimation? value))
+                    value.Reset();
             }
 
             animations[stance].Visible = true;

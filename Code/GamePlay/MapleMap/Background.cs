@@ -22,7 +22,6 @@ namespace MapleStory
         MapleAnimation animation = new();
         MovingObject moveObject = new();
 
-        private MaplePoint<double> cameraRealPosition;
         private int WOFFSET;
         private int HOFFSET;
 
@@ -36,10 +35,11 @@ namespace MapleStory
         private float opacity;
         private bool flipped;
 
+        private Camera? camera;
+
         public override void _Ready()
         {
-            Stage stage = GetNode<Stage>($"/root/Root/ViewportContainer/SubViewport/Stage");
-            stage.CameraRealPositionChanged += OnCameraRealPositionChanged;
+            camera = GetNode<Camera>($"/root/Root/ViewportContainer/SubViewport/Stage/Camera");
 
             AddChild(animation);
             AddChild(moveObject);
@@ -88,14 +88,11 @@ namespace MapleStory
             SetType(type);
         }
 
-        private void OnCameraRealPositionChanged(double viewRealPositionX, double viewRealPositionY)
-        {
-            cameraRealPosition = new MaplePoint<double>(viewRealPositionX, viewRealPositionY);
-        }
-
         public override void _Process(double delta)
         {
-            Interpolate(cameraRealPosition);
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<double> realPosition = camera!.RealPosition(alpha);
+            Interpolate(realPosition);
         }
 
         private static Type TypeById(int id)

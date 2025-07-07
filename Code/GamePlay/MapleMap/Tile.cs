@@ -7,13 +7,13 @@ namespace MapleStory
     {
         private MapleTexture texture;
         private MaplePoint<int> position;
-        private DrawArgument? currentDrawArgument;
         int zIndex;
+
+        private Camera? camera;
 
         public override void _Ready()
         {
-            Stage stage = GetNode<Stage>($"/root/Root/ViewportContainer/SubViewport/Stage");
-            stage.CameraPositionChanged += OnCameraPositionChanged;
+            camera = GetNode<Camera>($"/root/Root/ViewportContainer/SubViewport/Stage/Camera");
         }
 
         public Tile(Wz_Node source, string tileSet)
@@ -52,6 +52,8 @@ namespace MapleStory
 
             if (zIndex == 0)
                 zIndex = dsrc.FindNodeByPath("zM")?.GetValue<int>() ?? 0;
+
+            Position = position.ToVector2();
         }
 
         public new int GetZIndex()
@@ -59,18 +61,16 @@ namespace MapleStory
             return zIndex;
         }
 
-        public void OnCameraPositionChanged(int viewPositionX, int viewPositionY)
+        public override void _Process(double delta)
         {
-            currentDrawArgument = new DrawArgument(position + new MaplePoint<int>(viewPositionX, viewPositionY));
             QueueRedraw();
         }
 
         public override void _Draw()
         {
-            if (currentDrawArgument != null)
-            {
-                texture.Render(this, currentDrawArgument);
-            }
+            float alpha = (float)Engine.GetPhysicsInterpolationFraction();
+            MaplePoint<int> viewPosition = camera!.CurrentPosition(alpha);
+            texture.Render(this, new DrawArgument(viewPosition));
         }
     }
 }

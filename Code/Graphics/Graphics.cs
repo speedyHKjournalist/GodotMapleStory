@@ -378,9 +378,6 @@ namespace MapleStory
 
         public bool Update(int timeStep)
         {
-            frames[frame.Last()].Visible = false;
-            frames[frame.Get()].Visible = true;
-
             Frame framedata = GetFrame();
 
             // Update opacity
@@ -510,6 +507,12 @@ namespace MapleStory
         public override void _PhysicsProcess(double delta)
         {
             alpha = (float)Engine.GetPhysicsInterpolationFraction();
+
+            if (frame.Last() != frame.Get())
+            {
+                frames[frame.Last()].Visible = false;
+                frames[frame.Get()].Visible = true;
+            }
             animationEnd = Update((int)(delta * 1000));
         }
     }

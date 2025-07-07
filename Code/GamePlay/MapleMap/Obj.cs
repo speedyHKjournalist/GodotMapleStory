@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using WzComparerR2.WzLib;
 
 namespace MapleStory
@@ -26,18 +27,20 @@ namespace MapleStory
                 source.FindNodeByPath("l1").GetValue<string>(),
                 source.FindNodeByPath("l2").GetValue<string>()
             );
-
             Wz_Node objNode = WzLib.wzs.WzNode.FindNodeByPath(true, resourceUrl.Split('/'));
 
             animation = new MapleAnimation(objNode);
             position = new MaplePoint<int>(source.FindNodeByPath("x").GetValueEx<int>(0), source.FindNodeByPath("y").GetValueEx<int>(0));
             flip = source.FindNodeByPath("f").GetValueEx<int>(0) == 1;
             zIndex = source.FindNodeByPath("z").GetValueEx<int>(0);
+
+            Position = position.ToVector2();
         }
 
         public void Interpolate(MaplePoint<int> viewPosition)
         {
-            animation.Interpolate(new DrawArgument(position + viewPosition, flip));
+            animation.Position = viewPosition.ToVector2();
+            animation.Interpolate(new DrawArgument(flip));
         }
 
         public new int GetZIndex()
