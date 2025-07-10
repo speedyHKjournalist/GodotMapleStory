@@ -186,6 +186,7 @@ namespace MapleStory
         private Linear<float> xyScale;
 
         protected float alpha;
+        private float speed = 1.0f;
         private float opacityStep;
         private int delay;
         private int frameStep;
@@ -209,6 +210,7 @@ namespace MapleStory
             MapleAnimation copy = new()
             {
                 frames = [.. frames.Select(f => f.Clone())],
+                speed = speed,
                 animated = animated,
                 zigzag = zigzag,
                 animationEnd = animationEnd,
@@ -504,6 +506,11 @@ namespace MapleStory
 
         public bool IsAnimationEnd() => animationEnd;
 
+        public void SetSpeed(float speed)
+        {
+            this.speed = speed;
+        }
+
         public override void _PhysicsProcess(double delta)
         {
             alpha = (float)Engine.GetPhysicsInterpolationFraction();
@@ -513,7 +520,7 @@ namespace MapleStory
                 frames[frame.Last()].Visible = false;
                 frames[frame.Get()].Visible = true;
             }
-            animationEnd = Update((int)(delta * 1000));
+            animationEnd = Update((int)(delta * speed * 1000));
         }
     }
 }

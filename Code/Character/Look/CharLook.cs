@@ -636,8 +636,7 @@ namespace MapleStory
 
         public override void _PhysicsProcess(double delta)
         {
-            /*            float speed = GetParent<Character>().GetStanceSpeed();*/
-            float speed = 1.0f;
+            float speed = GetParent<Character>().GetStanceSpeed();
             IsAnimationEnd = Update((int)(speed * delta * 1000));
         }
     }

@@ -18,6 +18,7 @@ namespace MapleStory
         private CharStats? stats;
         private bool underWater = false;
         private TimedBool climbCoolDown = new();
+        private Movement lastMove;
 
         public override void _Ready()
         {
@@ -110,7 +111,7 @@ namespace MapleStory
             }
         }
 
-        public void SetLadder(Ladder ladder)
+        public void SetLadder(Ladder? ladder)
         {
             this.ladder = ladder;
             if (ladder != null)
@@ -139,6 +140,11 @@ namespace MapleStory
             climbCoolDown.SetFor(100);
         }
 
+        public bool CanClimb()
+        {
+            return !climbCoolDown;
+        }
+
         public override void _Process(double delta)
         {
             base._Process(delta);
@@ -149,6 +155,8 @@ namespace MapleStory
             base._PhysicsProcess(delta);
 
             BasePlayerState? playerState = GetState(state);
+
+            playerState?.Update(this);
             bool animationEnd = look!.IsAnimationEnded();
             if (animationEnd && attacking)
             {
@@ -157,6 +165,18 @@ namespace MapleStory
             }
             else
                 playerState?.UpdateState(this);
+
+            int stanceByte = facingRight ? (int)state: (int)state + 1;
+            Movement newMove = new(physicsObject, stanceByte);
+            bool needUpdate = lastMove.HasMoved(newMove);
+
+            if (needUpdate)
+            {
+                /*                MovePlayerPacket(newmove).dispatch();*/
+                lastMove = newMove;
+            }
+
+            climbCoolDown.Update((uint)(delta * 1000));
         }
     }
 }

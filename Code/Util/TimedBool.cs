@@ -55,7 +55,7 @@ namespace MapleStory
 
         public static bool operator ==(TimedBool tb, bool b)
         {
-            if (ReferenceEquals(tb, null))
+            if (tb is null)
             {
                 return !b;
             }
@@ -75,6 +75,14 @@ namespace MapleStory
         public static bool operator !=(bool b, TimedBool tb)
         {
             return !(b == tb);
+        }
+
+        public static bool operator !(TimedBool tb)
+        {
+            if (tb is null)
+                return false;
+
+            return !tb.Value;
         }
 
         public override bool Equals(object? obj)

@@ -60,7 +60,7 @@ namespace MapleStory
             }
             else
             {
-                Ladder ladder = player.GetLadder();
+                Ladder? ladder = player.GetLadder();
                 if (ladder != null)
                     state = ladder.IsLadder() ? Character.State.LADDER : Character.State.ROPE;
                 else
@@ -426,7 +426,7 @@ namespace MapleStory
             int y = player.GetPhysicObject().GetY();
             bool upwards = player.IsKeyDown(KeyAction.Id.UP);
             bool downwards = player.IsKeyDown(KeyAction.Id.DOWN);
-            Ladder ladder = player.GetLadder();
+            Ladder? ladder = player.GetLadder();
 
             if (ladder != null)
             {

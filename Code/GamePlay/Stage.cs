@@ -94,6 +94,15 @@ namespace MapleStory
             camera?.SetView(mapInfo.GetWalls(), mapInfo.GetBorders());
         }
 
+        public void CheckLadders(bool up)
+        {
+            if (!player.CanClimb() || player.IsClimbing() || player.IsAttacking())
+                return;
+
+            Ladder? ladder = mapInfo!.FindLadder(player.GetPosition(), up);
+            player.SetLadder(ladder);
+        }
+
         public override void _Process(double delta)
         {
             Interpolate();
@@ -105,6 +114,27 @@ namespace MapleStory
                 return;
 
             camera?.Update(player.GetPosition());
+
+            if (!player.IsClimbing() && !player.IsSitting() && !player.IsAttacking())
+            {
+                if (player.IsKeyDown(KeyAction.Id.UP) && !player.IsKeyDown(KeyAction.Id.DOWN))
+                    CheckLadders(true);
+
+/*                if (player.IsKeyDown(KeyAction::Id::UP))
+                    check_portals();*/
+
+                if (player.IsKeyDown(KeyAction.Id.DOWN))
+                    CheckLadders(false);
+
+/*                if (player.IsKeyDown(KeyAction::Id::SIT))
+                    check_seats();
+
+                if (player.IsKeyDown(KeyAction::Id::ATTACK))
+                    combat.use_move(0);
+
+                if (player.IsKeyDown(KeyAction::Id::PICKUP))
+                    check_drops();*/
+            }
         }
     }
 }

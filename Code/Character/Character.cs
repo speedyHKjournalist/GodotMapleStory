@@ -28,6 +28,7 @@ namespace MapleStory
         }
 
         protected CharLook? look;
+        protected AfterImage? afterImage;
         protected State state;
         private EffectLayer? effects;
 
@@ -50,9 +51,11 @@ namespace MapleStory
 
             effects = GetNode<EffectLayer>("effects");
             look = GetNode<CharLook>("look");
+            afterImage = GetNode<AfterImage>("afterImage"); 
 
             effects.ZIndex = 0;
             look.ZIndex = 0;
+            afterImage.ZIndex = 1;
             nameLabel.ZIndex = 3;
             chatBalloon.ZIndex = 4;
 
@@ -77,10 +80,61 @@ namespace MapleStory
             return physicsObject;
         }
 
+        public virtual int GetIntegerAttackSpeed() => 0;
+
+        public float GetRealAttackSpeed()
+        {
+            int speed = GetIntegerAttackSpeed();
+            return 1.7f - (float)speed / 10;
+        }
+
+        public float GetStanceSpeed()
+        {
+            if (attacking)
+                return GetRealAttackSpeed();
+
+            switch (state)
+            {
+                case State.WALK:
+                    return (float)Math.Abs(physicsObject.hspeed);
+                case State.LADDER:
+                case State.ROPE:
+                    return (float)Math.Abs(physicsObject.vspeed);
+                default:
+                    return 1.0f;
+            }
+        }
+
+        public void SetAfterImage(int skillId)
+        {
+            int weaponId = look!.GetEquips().GetWeapon();
+
+            if (weaponId <= 0)
+                return;
+
+            WeaponData weapon = WeaponData.Get(weaponId);
+
+            string stanceName = Stance.StanceUtils.Names[look.GetStance()];
+            int weaponLevel = weapon.GetEquipData()!.GetReqStat(MapleStat.Id.LEVEL);
+            string afterImageName = weapon.GetAfterImage();
+
+            afterImage?.Init(skillId, afterImageName, stanceName, weaponLevel);
+        }
+
+        public AfterImage? GetAfterImage()
+        {
+            return afterImage;
+        }
+
         public bool IsClimbing()
         {
             return state == State.LADDER || state == State.ROPE;
         }
+
+        public bool IsSitting()
+	    {
+		    return state == State.SIT;
+	    }
 
         public virtual void SetState(State newState)
         {
@@ -105,7 +159,7 @@ namespace MapleStory
             nameLabel.VerticalAlignment = VerticalAlignment.Center;
             nameLabel.Modulate = Colors.White;
 
-            StyleBoxFlat nameTagBackground = new StyleBoxFlat
+            StyleBoxFlat nameTagBackground = new()
             {
                 BgColor = new Color(0, 0, 0, 0.5f),
                 CornerRadiusBottomLeft = 4,
@@ -135,8 +189,9 @@ namespace MapleStory
             float alpha = (float)Engine.GetPhysicsInterpolationFraction();
             MaplePoint<double> realPosition = camera!.RealPosition(alpha);
             MaplePoint<int> absPosition = physicsObject.GetAbsolute(realPosition.X, realPosition.Y);
+            GlobalPosition = absPosition.ToVector2();
 
-            effects?.Interpolate(absPosition);
+            effects?.Interpolate(new());
             MapleColor color;
 
             if (invincible == true)
@@ -149,7 +204,8 @@ namespace MapleStory
             else
                 color = new(MapleColor.ColorCode.CWHITE);
 
-            look?.Interpolate(new DrawArgument(absPosition, color));
+            look?.Interpolate(new DrawArgument(new(), color));
+            afterImage?.Interpolate(new DrawArgument(new(), facingRight));
 
             if (ironBody == true)
             {
@@ -157,11 +213,11 @@ namespace MapleStory
                 float scale = 1.0f + ibalpha;
                 float opacity = 1.0f - ibalpha;
 
-                look?.Interpolate(new DrawArgument(absPosition, scale, scale, opacity));
+                look?.Interpolate(new DrawArgument(scale, scale, opacity));
             }
 
-            nameLabel.GlobalPosition = (absPosition - new MaplePoint<int>((int)(nameLabel.Size.X / 2f), -2)).ToVector2();
-            chatBalloon.GlobalPosition = (absPosition - new MaplePoint<int>(0, 85)).ToVector2();
+            nameLabel.Position = - new MaplePoint<int>((int)(nameLabel.Size.X / 2f), -2).ToVector2();
+            chatBalloon.Position = new MaplePoint<int>(0, -85).ToVector2();
         }
 
         public override void _PhysicsProcess(double delta)
