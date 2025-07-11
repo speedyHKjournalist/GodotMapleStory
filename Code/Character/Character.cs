@@ -51,7 +51,7 @@ namespace MapleStory
 
             effects = GetNode<EffectLayer>("effects");
             look = GetNode<CharLook>("look");
-            afterImage = GetNode<AfterImage>("afterImage"); 
+            afterImage = GetNode<AfterImage>("afterImage");
 
             effects.ZIndex = 0;
             look.ZIndex = 0;
@@ -132,9 +132,9 @@ namespace MapleStory
         }
 
         public bool IsSitting()
-	    {
-		    return state == State.SIT;
-	    }
+        {
+            return state == State.SIT;
+        }
 
         public virtual void SetState(State newState)
         {
@@ -177,7 +177,8 @@ namespace MapleStory
 
         public void OnLayerChanged(int objectId, int oldLayer, int newLayer)
         {
-            Node2D? previousPlayerNode = GetParent<Node2D>();
+            GD.Print(oldLayer, newLayer);
+            Node? previousPlayerNode = GetParent<Node>();
             CanvasLayer targetPlayerNode = GetNode<CanvasLayer>($"/root/Root/ViewportContainer/SubViewport/Stage/Layer{newLayer}/Player_5");
 
             previousPlayerNode?.RemoveChild(this);
@@ -216,7 +217,7 @@ namespace MapleStory
                 look?.Interpolate(new DrawArgument(scale, scale, opacity));
             }
 
-            nameLabel.Position = - new MaplePoint<int>((int)(nameLabel.Size.X / 2f), -2).ToVector2();
+            nameLabel.Position = -new MaplePoint<int>((int)(nameLabel.Size.X / 2f), -2).ToVector2();
             chatBalloon.Position = new MaplePoint<int>(0, -85).ToVector2();
         }
 
@@ -226,8 +227,13 @@ namespace MapleStory
             ironBody.Update((uint)(delta * 1000));
 
             // Render at layer 7 when character is climbing
-            if (IsClimbing())
-                OnLayerChanged(0, physicsObject.footHoldLayer, (int)Layer.Id.SEVEN);
+            if (IsClimbing() && physicsObject.footHoldLayer != (int)Layer.Id.SEVEN)
+            {
+                physics?.MoveObject(physicsObject);
+                EmitSignal(SignalName.LayerChanged, objectId, physicsObject.footHoldLayer, (int)Layer.Id.SEVEN);
+                physicsObject.footHoldLayer = (int)Layer.Id.SEVEN;
+                return;
+            }
 
             base._PhysicsProcess(delta);
         }

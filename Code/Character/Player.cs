@@ -1,3 +1,4 @@
+using Godot;
 using System.Collections.Generic;
 
 namespace MapleStory
@@ -120,7 +121,6 @@ namespace MapleStory
 
                 physicsObject.hspeed = 0.0;
                 physicsObject.vspeed = 0.0;
-                physicsObject.footHoldLayer = 7;
 
                 SetState(ladder.IsLadder() ? State.LADDER : State.ROPE);
             }
@@ -143,6 +143,13 @@ namespace MapleStory
         public bool CanClimb()
         {
             return !climbCoolDown;
+        }
+
+        public void SendAction(KeyAction.Id action, bool down)
+        {
+            BasePlayerState? playerState = GetState(state);
+            playerState?.SendAction(this, action, down);
+            keysDown[action] = down;
         }
 
         public override void _Process(double delta)

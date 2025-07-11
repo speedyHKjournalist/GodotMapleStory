@@ -1,3 +1,5 @@
+using Godot;
+
 namespace MapleStory
 {
     public abstract class BasePlayerState
@@ -389,14 +391,9 @@ namespace MapleStory
             if (player.IsKeyDown(KeyAction.Id.UP) && !player.IsKeyDown(KeyAction.Id.DOWN))
             {
                 if (climbContinue)
-                {
                     player.GetPhysicObject().vspeed = -player.GetClimbForce();
-                }
                 else
-                {
-
                     player.GetPhysicObject().vspeed = 0.0;
-                }
             }
             else if (player.IsKeyDown(KeyAction.Id.DOWN) && !player.IsKeyDown(KeyAction.Id.UP))
             {

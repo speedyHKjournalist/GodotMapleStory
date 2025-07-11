@@ -105,12 +105,12 @@ namespace MapleStory
         }
         public int GetAbsoluteX(double viewX)
         {
-            double interX = x.Normalized() ? Math.Round(x.Get()) : x.Get(alpha);
+            double interX = x.Normalized() ? Math.Round(x.Get()) : x.Get((float)Engine.GetPhysicsInterpolationFraction());
             return (int)Math.Round(interX + viewX);
         }
         public int GetAbsoluteY(double viewY)
         {
-            double interY = y.Normalized() ? Math.Round(y.Get()) : y.Get(alpha);
+            double interY = y.Normalized() ? Math.Round(y.Get()) : y.Get((float)Engine.GetPhysicsInterpolationFraction());
             return (int)Math.Round(interY + viewY);
         }
         public MaplePoint<int> GetAbsolute(double viewX, double viewY)
@@ -119,7 +119,6 @@ namespace MapleStory
         }
         public override void _Process(double delta)
         {
-            alpha = (float)Engine.GetPhysicsInterpolationFraction();
         }
 
         public override void _PhysicsProcess(double delta)

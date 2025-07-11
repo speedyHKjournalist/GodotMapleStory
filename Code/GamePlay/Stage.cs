@@ -103,6 +103,30 @@ namespace MapleStory
             player.SetLadder(ladder);
         }
 
+        public void SendKey(KeyType.Id type, KeyAction.Id action, bool down)
+        {
+            if (state != State.ACTIVE/* || !playable*/)
+                return;
+
+            switch (type)
+            {
+                case KeyType.Id.ACTION:
+                    player.SendAction(action, down);
+                    break;
+/*                case KeyType::Id::SKILL:
+                    combat.use_move(action);
+                    break;
+                case KeyType::Id::ITEM:
+                    player.use_item(action);
+                    break;
+                case KeyType::Id::FACE:
+                    player.set_expression(action);
+                    break;*/
+                default:
+                    break;
+            }
+        }
+
         public override void _Process(double delta)
         {
             Interpolate();

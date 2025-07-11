@@ -66,8 +66,6 @@ namespace MapleStory
             return physicsObject.GetPosition();
         }
 
-        virtual public void OnCameraRealPositionChanged(double viewX, double viewY) { }
-
         public override void _PhysicsProcess(double delta)
         {
             int oldLayer = physicsObject.footHoldLayer;
