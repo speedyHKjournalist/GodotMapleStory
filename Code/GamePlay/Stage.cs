@@ -18,6 +18,7 @@ namespace MapleStory
         private MapBackgrounds? backgrounds;
         private MapTilesObjs? tilesObjs;
         private MapNpcs? npcs;
+        private MapMobs? mobs;
         private MapInfo? mapInfo;
         private Physics? physics;
         private Camera? camera;
@@ -31,12 +32,17 @@ namespace MapleStory
             tilesObjs = GetNode<MapTilesObjs>("MapTilesObjs");
             physics = GetNode<Physics>("Physics");
             npcs = GetNode<MapNpcs>("MapNpcs_2");
+            mobs = GetNode<MapMobs>("MapMobs_3");
 
-            LoadMap(10000);
+            LoadMap(60000);
 
-            //Test
+            //Test NPC Spawn
             npcs.Spawn(new NpcSpawn(1, 2100, new MaplePoint<int>(833, 125), true, 9));
             npcs.Spawn(new NpcSpawn(2, 2101, new MaplePoint<int>(130, 293), true, 51));
+
+            // Test Mob Spawn
+            mobs.Spawn(new MobSpawn(3, 5130101, 1, 0, 83, true, 0, new MaplePoint<int>(300, 100)));
+            mobs.Spawn(new MobSpawn(4, 5130101, 1, 0, 83, true, 0, new MaplePoint<int>(300, 100)));
 
             CharEntry entry = new ();
             entry.look.skin = 0;
@@ -73,10 +79,6 @@ namespace MapleStory
 
             AddChild(player);
             player.Init(entry);
-        }
-
-        public void Interpolate()
-        {
         }
 
         public void LoadMap(int mapId)
@@ -129,7 +131,6 @@ namespace MapleStory
 
         public override void _Process(double delta)
         {
-            Interpolate();
         }
 
         public override void _PhysicsProcess(double delta)
@@ -158,6 +159,20 @@ namespace MapleStory
 
                 if (player.IsKeyDown(KeyAction::Id::PICKUP))
                     check_drops();*/
+            }
+
+            if (player.IsInvincible())
+                return;
+
+            int objectId = mobs!.FindColliding(player.GetPlayerRect());
+            if (objectId != 0)
+            {
+                MobAttack attack = mobs!.CreateAttack(objectId);
+                if (attack.valid)
+                {
+                    MobAttackResult result = player.Damage(attack);
+/*                    TakeDamagePacket(result, TakeDamagePacket::From::TOUCH).dispatch();*/
+                }
             }
         }
     }

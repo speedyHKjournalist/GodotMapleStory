@@ -1,6 +1,7 @@
 // Base for characters, e.g. the player and other clients on the same map.
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace MapleStory
 {
@@ -41,7 +42,9 @@ namespace MapleStory
         private ChatBalloon chatBalloon = GD.Load<PackedScene>("res://Scene/NpcDialogue.tscn").Instantiate<ChatBalloon>();
         private Label nameLabel = new();
 
-        private Camera? camera;
+        private List<DamageNumber> damageNumbers = [];
+
+        protected Camera? camera;
 
         public override void _Ready()
         {
@@ -93,16 +96,12 @@ namespace MapleStory
             if (attacking)
                 return GetRealAttackSpeed();
 
-            switch (state)
+            return state switch
             {
-                case State.WALK:
-                    return (float)Math.Abs(physicsObject.hspeed);
-                case State.LADDER:
-                case State.ROPE:
-                    return (float)Math.Abs(physicsObject.vspeed);
-                default:
-                    return 1.0f;
-            }
+                State.WALK => (float)Math.Abs(physicsObject.hspeed),
+                State.LADDER or State.ROPE => (float)Math.Abs(physicsObject.vspeed),
+                _ => 1.0f,
+            };
         }
 
         public void SetAfterImage(int skillId)
@@ -121,6 +120,20 @@ namespace MapleStory
             afterImage?.Init(skillId, afterImageName, stanceName, weaponLevel);
         }
 
+        public void ShowDamage(int damage)
+        {
+            DamageNumber number = new(DamageNumber.Type.TOPLAYER, damage)
+            {
+                ZIndex = 5,
+                Position = new Vector2(-10, -40)
+            };
+            damageNumbers.Add(number);
+            AddChild(number);
+
+            look?.SetAlerted(5000);
+            invincible?.SetFor(2000);
+        }
+
         public AfterImage? GetAfterImage()
         {
             return afterImage;
@@ -134,6 +147,11 @@ namespace MapleStory
         public bool IsSitting()
         {
             return state == State.SIT;
+        }
+
+        public virtual bool IsInvincible()
+        {
+            return invincible == true;
         }
 
         public virtual void SetState(State newState)
@@ -177,7 +195,6 @@ namespace MapleStory
 
         public void OnLayerChanged(int objectId, int oldLayer, int newLayer)
         {
-            GD.Print(oldLayer, newLayer);
             Node? previousPlayerNode = GetParent<Node>();
             CanvasLayer targetPlayerNode = GetNode<CanvasLayer>($"/root/Root/ViewportContainer/SubViewport/Stage/Layer{newLayer}/Player_5");
 
@@ -223,6 +240,16 @@ namespace MapleStory
 
         public override void _PhysicsProcess(double delta)
         {
+            for (int i = damageNumbers.Count - 1; i >= 0; i--)
+            {
+                if (damageNumbers[i].Faded)
+                {
+                    damageNumbers[i].QueueFree();
+                    RemoveChild(damageNumbers[i]);
+                    damageNumbers.RemoveAt(i);
+                }
+            }
+
             invincible.Update((uint)(delta * 1000));
             ironBody.Update((uint)(delta * 1000));
 

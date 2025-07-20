@@ -28,4 +28,39 @@ namespace MapleStory
             return new Npc(npcId, objectId, flip, foothold, false, spawnPosition);
         }
     }
+
+    public partial class MobSpawn
+    {
+        private int objectId;
+        private int mobId;
+        private int mode;
+        private int stance;
+        private int foothold;
+        private bool newSpawn;
+        private int team;
+        private MaplePoint<int> position;
+        public MobSpawn(int objectId, int mobId, int mode, int stance, int foothold, bool newSpawn, int team, MaplePoint<int> position)
+        {
+            this.objectId = objectId;
+            this.mobId = mobId;
+            this.mode = mode;
+            this.stance = stance;
+            this.foothold = foothold;
+            this.newSpawn = newSpawn;
+            this.team = team;
+            this.position = position;
+        }
+        public int GetMode()
+        {
+            return mode;
+        }
+        public int GetObjectId()
+        {
+            return objectId;
+        }
+        public MapObject Instantiate()
+        {
+            return new Mob(objectId, mobId, mode, stance, foothold, newSpawn, team, position);
+        }
+    }
 }

@@ -9,7 +9,6 @@ namespace MapleStory
 
         public override void _Ready()
         {
-            Name = "MapNpcs_2";
             physics = GetNode<Physics>("/root/Root/ViewportContainer/SubViewport/Stage/Physics");
             npcs = GetNode<MapObjects>("Npcs");
         }

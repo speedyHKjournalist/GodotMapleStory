@@ -168,9 +168,9 @@ namespace MapleStory
             return timeStep * (float)(scales.Item2 - scales.Item1) / delay;
         }
 
-        public MapleRectangle<int>? GetBounds()
+        public MapleRectangle<int> GetBounds()
         {
-            return bounds;
+            return new MapleRectangle<int>(bounds!.GetLeftTop(), bounds!.GetRightBottom());
         }
     }
 
@@ -499,7 +499,7 @@ namespace MapleStory
             return frames[frame.Get()];
         }
 
-        public MapleRectangle<int>? GetBounds()
+        public MapleRectangle<int> GetBounds()
         {
             return GetFrame().GetBounds();
         }

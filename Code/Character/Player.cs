@@ -20,6 +20,7 @@ namespace MapleStory
         private bool underWater = false;
         private TimedBool climbCoolDown = new();
         private Movement lastMove;
+        private RandomNumberGenerator randomizer = new();
 
         public override void _Ready()
         {
@@ -69,6 +70,17 @@ namespace MapleStory
             return keysDown.ContainsKey(action) && keysDown[action];
         }
 
+        public override bool IsInvincible()
+	    {
+		    if (state == Character.State.DIED)
+			    return true;
+
+/*		    if (HasBuff(Buffstat.Id.DARKSIGHT))
+			    return true;*/
+
+		    return base.IsInvincible();
+	    }
+
         public BasePlayerState? GetState(State state)
         {
             switch (state)
@@ -90,6 +102,38 @@ namespace MapleStory
                     return flyingState;
                 default:
                     return null;
+            }
+        }
+
+        public MapleRectangle<int> GetPlayerRect()
+        {
+            MaplePoint<int> position = physicsObject.GetPosition();
+
+            switch (state)
+            {
+                case State.WALK:
+                case State.STAND:
+                case State.FALL:
+                case State.ALERT:
+                case State.SWIM:
+                case State.LADDER:
+                case State.ROPE:
+                    return new (new MaplePoint<int>(position.X - 10, position.Y - 50),
+                        new MaplePoint<int>(position.X + 10, position.Y));
+                case State.PRONE:
+                    if (facingRight)
+                        return new(new MaplePoint<int>(position.X - 15, position.Y - 40),
+                            new MaplePoint<int>(position.X + 40, position.Y));
+                    else
+                        return new(new MaplePoint<int>(position.X - 45, position.Y - 40),
+                            new MaplePoint<int>(position.X + 10, position.Y));
+                case State.DIED:
+                    return new();
+                case State.SIT:
+                    return new(new MaplePoint<int>(position.X - 10, position.Y - 50),
+                        new MaplePoint<int>(position.X + 10, position.Y));
+                default:
+                    return new();
             }
         }
 
@@ -150,6 +194,28 @@ namespace MapleStory
             BasePlayerState? playerState = GetState(state);
             playerState?.SendAction(this, action, down);
             keysDown[action] = down;
+        }
+
+        public MobAttackResult Damage(MobAttack attack)
+        {
+            int damage = stats!.CalculateDamage(attack.watk);
+            ShowDamage(damage);
+
+            bool fromLeft = attack.origin.X > physicsObject.GetX();
+
+            bool missed = damage <= 0;
+            bool imMovable = (ladder != null) || (state == Character.State.DIED);
+            bool knockBack = !missed && !imMovable;
+
+            if (knockBack && randomizer.RandfRange(0, 1) > stats.GetStance())
+            {
+                physicsObject.hspeed = fromLeft ? -1.5 : 1.5;
+                physicsObject.vForce -= 3.5;
+            }
+
+            int direction = fromLeft ? 0 : 1;
+
+            return new MobAttackResult(attack, damage, direction);
         }
 
         public override void _Process(double delta)

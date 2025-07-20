@@ -69,7 +69,7 @@ namespace MapleStory
             float angleRad = Mathf.DegToRad(drawArg.GetAngle());
             MapleRectangle<int> rect = drawArg.GetRectangle(origin, dimensions);
 
-            Vector2 size = new Vector2(rect.Width(), rect.Height());
+            Vector2 size = new(rect.Width(), rect.Height());
             Vector2 center = rect.GetLeftTop().ToVector2() + size / 2f;
 
             Rect2 drawRect = new Rect2(-size / 2f, size);

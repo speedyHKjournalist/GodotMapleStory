@@ -36,7 +36,7 @@ namespace MapleStory
             {
                 foreach (Wz_Node tileNode in source.FindNodeByPath("tile").Nodes)
                 {
-                    Tile tile = new Tile(tileNode, tileSet.GetValue<string>() + ".img");
+                    Tile tile = new(tileNode, tileSet.GetValue<string>() + ".img");
                     int zIndex = tile.GetZIndex();
                     tile.ZIndex = zIndex + TILE_RENDERING_OFFSET;
 

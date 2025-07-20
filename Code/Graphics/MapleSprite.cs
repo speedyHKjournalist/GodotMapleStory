@@ -21,11 +21,6 @@ namespace MapleStory
 
         public MapleSprite(Wz_Node src) : this(src, new DrawArgument()) { }
 
-        public void SetSpeed(float speed)
-        {
-            this.speed = speed;
-        }
-
         public void Interpolate(MaplePoint<int> parentPosition)
         {
             DrawArgument absArgs = stateArgs + parentPosition;

@@ -69,7 +69,7 @@ namespace MapleStory
             if (!effects.ContainsKey(z))
                 effects[z] = [];
 
-            int finalZIndex = (z < 0) ? z : z + 5;
+            int finalZIndex = (z < 0) ? z : z + 6;
 
             Effect newEffect = new(animationTemplate, args, speed) { ZIndex = finalZIndex };
             effects[finalZIndex].Add(newEffect);
